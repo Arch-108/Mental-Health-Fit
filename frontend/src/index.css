@@ -1,0 +1,693 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap');
+
+:root {
+  /* Forever Fit brand: deep navy + warm ivory base with a soft gold
+     accent, confident rounded (not pill) controls, generous cards.
+     Dark mode flips the base and lifts the accent brightness for
+     contrast - see [data-theme="dark"] below. */
+  --color-primary: #1B3A63;
+  --color-primary-dark: #12253F;
+  --color-accent: #E8A83C;
+  --color-accent-tint: #FBEFD7;
+  --color-accent-tint-border: #F0D9A0;
+  --color-bg: #F7F4EC;
+  --color-surface: #FFFFFF;
+  --color-text: #16233A;
+  --color-text-muted: #5B6472;
+  --color-border: #E3DFD3;
+  --color-danger: #B3261E;
+  --color-success: #1B6E3C;
+
+  --font-display: 'Manrope', -apple-system, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --radius-sm: 10px;
+  --radius-pill: 999px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --shadow-card: 0 1px 2px rgba(22, 35, 58, 0.05), 0 10px 28px rgba(22, 35, 58, 0.07);
+}
+
+[data-theme="dark"] {
+  --color-primary: #5B7FB5;
+  --color-primary-dark: #7B9CC7;
+  --color-accent: #E8A83C;
+  --color-accent-tint: #3A3221;
+  --color-accent-tint-border: #59491F;
+  --color-bg: #0F1826;
+  --color-surface: #182338;
+  --color-text: #F2F1EC;
+  --color-text-muted: #B7BDC9;
+  --color-border: #2B3A54;
+  --color-danger: #FF9A8F;
+  --color-success: #8ED6A8;
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.4), 0 10px 28px rgba(0,0,0,0.5);
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.4em;
+}
+
+p { margin: 0 0 1em; color: var(--color-text-muted); line-height: 1.55; }
+
+a { color: var(--color-primary); }
+
+button, input, select, textarea { font-family: inherit; font-size: 1rem; }
+
+input, select, textarea {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+/* Multi-line fields keep a soft rounded-card shape rather than a pill -
+   a full pill on a tall textarea looks like a rendering bug, not a choice. */
+textarea { border-radius: var(--radius-md); }
+
+input:focus, select:focus, textarea:focus, button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+  color: var(--color-text);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.4rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.08s ease, background 0.15s ease;
+}
+
+.btn:active { transform: scale(0.98); }
+
+.btn-primary { background: var(--color-primary); color: white; }
+.btn-primary:hover { background: var(--color-primary-dark); }
+
+.btn-block { width: 100%; }
+
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 2rem;
+}
+
+.error-banner {
+  background: color-mix(in srgb, var(--color-danger) 12%, var(--color-surface));
+  color: var(--color-danger);
+  border: 1px solid color-mix(in srgb, var(--color-danger) 35%, transparent);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 1rem;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+/* Reduced motion respected throughout */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+/* ===========================================================
+   Accessibility modes - driven by data attributes on <html>,
+   set by AccessibilityContext. Kept as CSS overrides rather than
+   inline styles so every existing component picks these up for
+   free, with no per-component logic needed.
+   =========================================================== */
+
+/* Font size scaling */
+html[data-font-size="large"] body { font-size: 1.15rem; }
+html[data-font-size="xlarge"] body { font-size: 1.35rem; }
+html[data-font-size="large"] h1, html[data-font-size="xlarge"] h1 { font-size: 1.3em; }
+
+/* Dyslexia-friendly font - a well-spaced, simple sans-serif as an
+   alternative to the display serif, applied platform-wide. */
+html[data-dyslexia-font="true"] body,
+html[data-dyslexia-font="true"] h1,
+html[data-dyslexia-font="true"] h2,
+html[data-dyslexia-font="true"] h3 {
+  font-family: 'Atkinson Hyperlegible', Verdana, Arial, sans-serif;
+  letter-spacing: 0.01em;
+  line-height: 1.7;
+}
+
+/* High contrast mode - stronger text/border contrast, thicker focus rings */
+html[data-color-mode="high-contrast"] {
+  --color-text: #000000;
+  --color-text-muted: #1a1a1a;
+  --color-border: #000000;
+  --color-bg: #FFFFFF;
+  --color-surface: #FFFFFF;
+}
+html[data-color-mode="high-contrast"] .card { border: 2px solid #000; box-shadow: none; }
+html[data-color-mode="high-contrast"] input,
+html[data-color-mode="high-contrast"] select,
+html[data-color-mode="high-contrast"] textarea { border: 2px solid #000; }
+html[data-color-mode="high-contrast"] *:focus-visible { outline: 3px solid #000; outline-offset: 2px; }
+
+/* Colorblind-friendly palette - red/green is the most common
+   confusion pair (deuteranopia/protanopia), so status colors move to
+   a blue/orange pairing that stays distinguishable, and status text
+   is never conveyed by color alone anywhere in the app. */
+html[data-color-mode="colorblind-friendly"] {
+  --color-primary: #005A8D;
+  --color-primary-dark: #003F63;
+  --color-accent: #E2A63B;
+  --color-success: #0072B2;
+  --color-danger: #E69F00;
+}
+html[data-color-mode="colorblind-friendly"] .error-banner {
+  background: #FFF3E0;
+  color: #B9650A;
+  border-color: #E69F00;
+}
+
+/* Responsive base rules */
+@media (max-width: 640px) {
+  .card { padding: 1.4rem; }
+  h1 { font-size: 1.5rem; }
+}
+
+/* ===========================================================
+   AppShell layout - top navigation bar. Desktop: full horizontal
+   nav with grouped dropdowns for secondary links. Below 960px: nav
+   collapses behind a hamburger into a flat, grouped list so the
+   platform stays fully usable on small/low-end devices.
+   =========================================================== */
+.app-shell { display: flex; flex-direction: column; min-height: 100vh; position: relative; overflow: hidden; }
+
+.app-topnav {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.app-topnav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.85rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.app-brand {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--color-primary);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+}
+
+.app-nav-desktop { display: flex; align-items: center; gap: 0.2rem; flex: 1; }
+
+.app-nav-link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  padding: 0.55rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.92rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.app-nav-link.active { background: var(--color-accent-tint); color: var(--color-primary-dark); font-weight: 600; }
+.app-nav-link:hover { background: var(--color-bg); color: var(--color-text); }
+
+.app-nav-dropdown { position: relative; }
+.app-nav-dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  padding: 0.55rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.92rem;
+  font-weight: 500;
+  font-family: inherit;
+}
+.app-nav-dropdown-trigger:hover, .app-nav-dropdown-trigger.open { background: var(--color-bg); color: var(--color-text); }
+.app-nav-dropdown-trigger.active { color: var(--color-primary-dark); font-weight: 600; }
+.app-nav-dropdown-caret { font-size: 0.65em; }
+
+.app-nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 0.4rem;
+  min-width: 210px;
+  z-index: 45;
+}
+.app-nav-dropdown-menu a {
+  display: block;
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.app-nav-dropdown-menu a:hover, .app-nav-dropdown-menu a.active { background: var(--color-bg); }
+.app-nav-dropdown-menu a.active { color: var(--color-primary-dark); font-weight: 600; }
+
+.app-topnav-right { display: flex; align-items: center; gap: 0.7rem; flex-shrink: 0; }
+.app-user-label { font-size: 0.88rem; color: var(--color-text-muted); white-space: nowrap; }
+.app-logout-btn { background: transparent; color: var(--color-text-muted); border: 1px solid var(--color-border); }
+.app-logout-btn:hover { background: var(--color-bg); color: var(--color-text); }
+
+.hamburger-btn { display: none; background: transparent; border: none; font-size: 1.3rem; cursor: pointer; color: var(--color-text); }
+
+.app-nav-mobile { display: none; }
+
+.app-main { flex: 1; min-width: 0; }
+.app-content { padding: 2rem 1.5rem; max-width: 1100px; margin: 0 auto; }
+
+/* Role-differentiated backdrop for the authenticated shell - CSS-only
+   (no image assets, so it costs nothing extra on a slow connection),
+   subtle enough to sit behind cards/topnav without hurting contrast.
+   Patient keeps the brand's warm ivory; doctor/admin get their own tint
+   so it's obvious at a glance which "mode" you're in. Two large soft glow
+   blobs (fixed, so they stay put while the page scrolls) give pages with
+   little content of their own a sense of depth instead of a flat, empty
+   fill - the same corner-glow trick used on the login hero panel. */
+.app-shell::before, .app-shell::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+}
+.app-shell::before { top: -120px; right: -120px; width: 460px; height: 460px; }
+.app-shell::after { bottom: -140px; left: -140px; width: 420px; height: 420px; }
+
+.app-shell[data-role="patient"] {
+  background-color: var(--color-bg);
+  background-image: radial-gradient(circle, rgba(232, 168, 60, 0.22) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.app-shell[data-role="patient"]::before { background: radial-gradient(circle, rgba(232, 168, 60, 0.20) 0%, rgba(232, 168, 60, 0) 70%); }
+.app-shell[data-role="patient"]::after { background: radial-gradient(circle, rgba(27, 58, 99, 0.08) 0%, rgba(27, 58, 99, 0) 70%); }
+
+.app-shell[data-role="doctor"] {
+  background-color: #EEF3F8;
+  background-image:
+    linear-gradient(rgba(27, 58, 99, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(27, 58, 99, 0.07) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.app-shell[data-role="doctor"]::before { background: radial-gradient(circle, rgba(27, 58, 99, 0.16) 0%, rgba(27, 58, 99, 0) 70%); }
+.app-shell[data-role="doctor"]::after { background: radial-gradient(circle, rgba(232, 168, 60, 0.10) 0%, rgba(232, 168, 60, 0) 70%); }
+
+.app-shell[data-role="admin"] {
+  background-color: #F1EEF5;
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(58, 44, 99, 0.065) 0px, rgba(58, 44, 99, 0.065) 1px,
+    transparent 1px, transparent 14px
+  );
+}
+.app-shell[data-role="admin"]::before { background: radial-gradient(circle, rgba(88, 44, 153, 0.16) 0%, rgba(88, 44, 153, 0) 70%); }
+.app-shell[data-role="admin"]::after { background: radial-gradient(circle, rgba(232, 168, 60, 0.09) 0%, rgba(232, 168, 60, 0) 70%); }
+
+[data-theme="dark"] .app-shell[data-role="patient"] {
+  background-image: radial-gradient(circle, rgba(232, 168, 60, 0.14) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+[data-theme="dark"] .app-shell[data-role="patient"]::before { background: radial-gradient(circle, rgba(232, 168, 60, 0.16) 0%, rgba(232, 168, 60, 0) 70%); }
+[data-theme="dark"] .app-shell[data-role="patient"]::after { background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 70%); }
+
+[data-theme="dark"] .app-shell[data-role="doctor"] {
+  background-color: #0F1A28;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+[data-theme="dark"] .app-shell[data-role="doctor"]::before { background: radial-gradient(circle, rgba(91, 127, 181, 0.22) 0%, rgba(91, 127, 181, 0) 70%); }
+[data-theme="dark"] .app-shell[data-role="doctor"]::after { background: radial-gradient(circle, rgba(232, 168, 60, 0.12) 0%, rgba(232, 168, 60, 0) 70%); }
+
+[data-theme="dark"] .app-shell[data-role="admin"] {
+  background-color: #16121F;
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 1px,
+    transparent 1px, transparent 14px
+  );
+}
+[data-theme="dark"] .app-shell[data-role="admin"]::before { background: radial-gradient(circle, rgba(139, 110, 190, 0.22) 0%, rgba(139, 110, 190, 0) 70%); }
+[data-theme="dark"] .app-shell[data-role="admin"]::after { background: radial-gradient(circle, rgba(232, 168, 60, 0.10) 0%, rgba(232, 168, 60, 0) 70%); }
+
+@media (max-width: 960px) {
+  .app-nav-desktop { display: none; }
+  .hamburger-btn { display: block; }
+  .app-user-label { display: none; }
+
+  .app-nav-mobile.open {
+    display: block;
+    border-top: 1px solid var(--color-border);
+    padding: 0.5rem 1rem 1rem;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+  }
+  .app-nav-mobile-group-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+    padding: 0.8rem 0.6rem 0.3rem;
+  }
+  .app-nav-mobile a {
+    display: block;
+    padding: 0.65rem 0.6rem;
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  .app-nav-mobile a.active { background: var(--color-accent-tint); color: var(--color-primary-dark); font-weight: 600; }
+  .app-topnav-inner { padding: 0.75rem 1rem; }
+
+  /* Keep the collapsed top bar from overflowing on narrow screens - drop
+     the connection pill and the standalone logout button (it's already
+     repeated at the bottom of the open mobile menu). */
+  .app-conn-status-top { display: none; }
+  .app-logout-btn-top { display: none; }
+  .public-nav-cta-top { display: none; }
+  .app-topnav-right { gap: 0.4rem; }
+}
+
+@media (max-width: 420px) {
+  .app-brand { font-size: 1.1rem; }
+}
+
+@media (max-width: 640px) {
+  .app-content { padding: 1.2rem 1rem; }
+}
+
+/* Reusable responsive 2-column grid - collapses to 1 column below 720px.
+   Used anywhere the page previously hardcoded gridTemplateColumns inline. */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+@media (max-width: 720px) {
+  .grid-2 { grid-template-columns: 1fr; }
+}
+
+.theme-toggle-btn {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface));
+  color: var(--color-primary);
+}
+.pill-badge.warn {
+  background: color-mix(in srgb, var(--color-danger) 14%, var(--color-surface));
+  color: var(--color-danger);
+}
+
+/* Photo header used at the top of a few content pages (Find Doctors,
+   Maternal Care, Crisis Support) - same navy-scrim-over-photo treatment as
+   the auth hero for visual consistency across the app. */
+.page-banner {
+  border-radius: var(--radius-lg);
+  background-size: cover;
+  background-position: center;
+  min-height: 190px;
+  display: flex;
+  align-items: flex-end;
+  padding: 1.6rem 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-card);
+}
+.page-banner h1 { font-size: 1.9rem; }
+@media (max-width: 640px) {
+  .page-banner { min-height: 150px; padding: 1.2rem 1.3rem; border-radius: var(--radius-md); }
+  .page-banner h1 { font-size: 1.5rem; }
+}
+
+
+/* Auth pages (Login/Register) - side-by-side brand panel on desktop,
+   stacked with the form first on mobile so people aren't forced to
+   scroll past marketing copy to reach the form. */
+.auth-wrapper {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.auth-brand-panel {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(160deg, rgba(15,24,38,0.92) 0%, rgba(27,58,99,0.82) 100%),
+    url('/images/auth-hero.jpg') center / cover no-repeat;
+  color: white;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.auth-brand-panel::before {
+  content: '';
+  position: absolute;
+  width: 440px;
+  height: 440px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,168,60,0.30) 0%, rgba(232,168,60,0) 70%);
+  top: -140px;
+  right: -140px;
+}
+.auth-brand-panel > * { position: relative; z-index: 1; }
+.auth-form-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+@media (max-width: 860px) {
+  .auth-wrapper { grid-template-columns: 1fr; }
+  .auth-brand-panel { order: 2; padding: 2rem; }
+  .auth-form-panel { order: 1; padding: 1.5rem 1.2rem 0.5rem; }
+}
+
+/* ===========================================================
+   Public marketing homepage (Home.jsx) - hero, alternating
+   feature sections, steps, FAQ accordion, footer.
+   =========================================================== */
+.hero-marketing {
+  background-size: cover;
+  background-position: center;
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+  padding: 3rem 1.5rem;
+}
+.hero-marketing-inner { max-width: 620px; margin: 0 auto; width: 100%; padding-left: 1.5rem; }
+.hero-marketing h1 { color: white; font-size: 2.6rem; max-width: 560px; }
+.hero-marketing p { color: rgba(255,255,255,0.88); font-size: 1.05rem; max-width: 500px; }
+.hero-pill {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.28);
+  border-radius: 999px; padding: 0.4rem 0.9rem; font-size: 0.85rem; color: white;
+}
+@media (max-width: 640px) {
+  .hero-marketing { min-height: 460px; padding: 2rem 1rem; }
+  .hero-marketing-inner { padding-left: 0.3rem; }
+  .hero-marketing h1 { font-size: 1.9rem; }
+}
+
+.marketing-section { padding: 3.5rem 1.5rem; }
+.marketing-section-inner { max-width: 1080px; margin: 0 auto; }
+.marketing-section h2 { font-size: 1.7rem; }
+@media (max-width: 640px) {
+  .marketing-section { padding: 2.2rem 1.2rem; }
+}
+
+.feature-split { display: grid; grid-template-columns: 1fr 1.3fr; gap: 2.5rem; align-items: center; }
+.feature-image { width: 100%; height: 320px; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow-card); }
+.feature-icon-block { display: flex; align-items: center; justify-content: center; }
+.feature-icon {
+  width: 96px; height: 96px; border-radius: var(--radius-lg);
+  background: var(--color-accent-tint); color: var(--color-primary);
+  display: flex; align-items: center; justify-content: center;
+}
+.feature-list { list-style: none; padding: 0; margin: 1rem 0 0; }
+.feature-list li {
+  padding: 0.55rem 0 0.55rem 1.6rem; position: relative; color: var(--color-text); border-bottom: 1px solid var(--color-border);
+}
+.feature-list li::before {
+  content: ''; position: absolute; left: 0; top: 1.05rem; width: 8px; height: 8px; border-radius: 50%; background: var(--color-accent);
+}
+@media (max-width: 780px) {
+  .feature-split { grid-template-columns: 1fr; gap: 1.4rem; }
+  .feature-image { height: 220px; }
+}
+
+.dashboard-tip { display: grid; grid-template-columns: 220px 1fr; gap: 1.4rem; align-items: center; }
+.dashboard-tip-image { width: 100%; height: 140px; object-fit: cover; border-radius: var(--radius-md); }
+@media (max-width: 640px) {
+  .dashboard-tip { grid-template-columns: 1fr; gap: 0.8rem; }
+  .dashboard-tip-image { height: 150px; }
+}
+
+.steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 1.6rem; }
+.step-card { position: relative; padding-top: 2.4rem; }
+.step-number {
+  position: absolute; top: -16px; left: 1.6rem; width: 36px; height: 36px; border-radius: 50%;
+  background: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 700; box-shadow: var(--shadow-card);
+}
+@media (max-width: 780px) {
+  .steps-grid { grid-template-columns: 1fr; }
+}
+
+.faq-item { border-bottom: 1px solid var(--color-border); }
+.faq-question {
+  width: 100%; background: none; border: none; text-align: left; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  padding: 1.1rem 0; font-family: var(--font-display); font-weight: 600; font-size: 1rem; color: var(--color-text);
+}
+.faq-answer { margin: 0 0 1.1rem; color: var(--color-text-muted); }
+
+.footer-marketing { background: #0F1826; color: rgba(255,255,255,0.85); padding: 3rem 1.5rem 1.5rem; margin-top: 1rem; }
+.footer-marketing-inner {
+  max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 2rem;
+}
+.footer-marketing h4 { color: white; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; margin: 0 0 0.9rem; }
+.footer-marketing a { display: block; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.92rem; margin-bottom: 0.6rem; }
+.footer-marketing a:hover { color: white; }
+.footer-marketing-bottom {
+  max-width: 1080px; margin: 2rem auto 0; padding-top: 1.2rem; border-top: 1px solid rgba(255,255,255,0.12);
+  font-size: 0.82rem; color: rgba(255,255,255,0.55);
+}
+@media (max-width: 720px) {
+  .footer-marketing-inner { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 460px) {
+  .footer-marketing-inner { grid-template-columns: 1fr; }
+}
+
+/* ===========================================================
+   List-row pattern - a minimal, thin-divided row list (name +
+   meta + trailing status/action) used for "things you have"
+   collections: upcoming care, follow-ups, care circle members,
+   doctors, facilities. Sits inside a .list-section card shell.
+   =========================================================== */
+.list-section { background: var(--color-surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); overflow: hidden; }
+.list-section-header { padding: 1.1rem 1.3rem 0.6rem; display: flex; justify-content: space-between; align-items: center; gap: 0.8rem; }
+.list-section-header h3 { margin: 0; }
+.list-empty { padding: 0.4rem 1.3rem 1.2rem; margin: 0; }
+
+.list-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.85rem 1.3rem;
+  border-top: 1px solid var(--color-border);
+  text-decoration: none;
+  color: inherit;
+}
+.list-section > .list-row:first-child,
+.list-section > .list-row-block:first-child { border-top: none; }
+a.list-row:hover, .list-row.clickable:hover { background: var(--color-bg); cursor: pointer; }
+.list-row.active { background: var(--color-accent-tint); }
+.list-row.active .list-row-title { color: var(--color-primary-dark); }
+
+.list-row-icon {
+  width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+  background: var(--color-accent-tint); color: var(--color-primary-dark);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 700; font-size: 0.85rem;
+}
+.list-row-body { flex: 1; min-width: 0; }
+.list-row-title { display: block; font-weight: 600; color: var(--color-text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.list-row-meta { display: block; font-size: 0.83rem; color: var(--color-text-muted); margin-top: 0.15rem; }
+.list-row-trail { flex-shrink: 0; display: flex; align-items: center; gap: 0.5rem; font-size: 0.83rem; color: var(--color-text-muted); white-space: nowrap; }
+
+/* Variant for rows that carry richer content below the summary line
+   (follow-ups with a reply form) - same divider rhythm, block layout. */
+.list-row-block { padding: 1rem 1.3rem; border-top: 1px solid var(--color-border); }
+.list-row-header { display: flex; align-items: center; gap: 0.9rem; }
+
+@media (max-width: 480px) {
+  .list-row, .list-row-block { padding: 0.75rem 1rem; }
+  .list-row-trail { flex-direction: column; align-items: flex-end; gap: 0.2rem; }
+}
+
+/* CommBank-style quick-action tile grid - icon-topped square buttons
+   instead of a plain row of text links. */
+.quick-actions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); gap: 0.8rem; margin-top: 0.6rem; }
+.quick-action-tile {
+  display: flex; flex-direction: column; align-items: center; gap: 0.6rem; text-align: center;
+  padding: 1.1rem 0.6rem; border-radius: var(--radius-md); border: 1px solid var(--color-border);
+  background: var(--color-bg); text-decoration: none; color: var(--color-text); font-size: 0.85rem; font-weight: 600;
+}
+.quick-action-tile:hover { border-color: var(--color-primary); }
+.quick-action-tile .qa-icon {
+  width: 44px; height: 44px; border-radius: 50%; background: var(--color-primary); color: white;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+
+
+
