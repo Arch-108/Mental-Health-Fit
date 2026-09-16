@@ -89,6 +89,20 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/announcements', announcementRoutes);
 
+// In production this single process serves the built frontend too, rather
+// than assuming a separate static host - the shared hosting here gives one
+// Node process/port per site. Any route that isn't /api or /uploads falls
+// through to the SPA's index.html so React Router's client-side routes
+// (e.g. /dashboard on a hard refresh) resolve instead of 404ing.
+const frontendDist = path.join(__dirname, '../../frontend/dist');
+if (process.env.NODE_ENV === 'production' && fs.existsSync(frontendDist)) {
+  app.use(express.static(frontendDist));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) return next();
+    res.sendFile(path.join(frontendDist, 'index.html'));
+  });
+}
+
 // Centralized error handler - keeps stack traces out of API responses.
 app.use((err, req, res, next) => {
   console.error(err);

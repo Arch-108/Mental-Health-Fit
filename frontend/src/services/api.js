@@ -1,14 +1,18 @@
 import axios from 'axios';
 
-// Backend origin (no /api suffix) - set VITE_API_ORIGIN explicitly for a
-// real deployment (e.g. a Render URL) where the API lives on a different
-// host than the frontend. Left unset, this falls back to whatever
-// hostname the browser actually used to load the page - so it's
-// "localhost" for you on this machine, and automatically the right LAN IP
-// for anyone else loading the app from your machine's network address,
+// Backend origin (no /api suffix). Set VITE_API_ORIGIN explicitly for a
+// deployment where the API lives on a different host than the frontend, or
+// to an empty string when one Node process serves both frontend and API
+// from the same origin (e.g. this project's shared-hosting deployment) so
+// requests just use relative paths. Left UNSET (the local dev default),
+// this falls back to whatever hostname the browser actually used to load
+// the page - "localhost" on this machine, and automatically the right LAN
+// IP for anyone else loading the app from your machine's network address,
 // with no manual .env edits every time that IP changes (e.g. a different
 // WiFi network).
-export const API_ORIGIN = import.meta.env.VITE_API_ORIGIN || `http://${window.location.hostname}:5000`;
+export const API_ORIGIN = import.meta.env.VITE_API_ORIGIN !== undefined
+  ? import.meta.env.VITE_API_ORIGIN
+  : `http://${window.location.hostname}:5000`;
 
 // Single axios instance for the whole app. Later features (AI Navigator,
 // appointments, etc.) should import THIS rather than creating their own
