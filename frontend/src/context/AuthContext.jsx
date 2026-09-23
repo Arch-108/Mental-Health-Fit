@@ -8,7 +8,11 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    // sessionStorage (not localStorage) is deliberate: the token is cleared
+    // automatically when the browser/tab closes, so reopening the site
+    // always starts at the login screen instead of silently staying signed
+    // in as whoever last used it - important on a shared/demo machine.
+    const token = sessionStorage.getItem('token');
     if (!token) {
       setLoading(false);
       return;
@@ -17,17 +21,17 @@ export function AuthProvider({ children }) {
     // trusting it blindly - if it's expired/invalid, this clears it.
     getCurrentUser()
       .then(({ user }) => setUser(user))
-      .catch(() => localStorage.removeItem('token'))
+      .catch(() => sessionStorage.removeItem('token'))
       .finally(() => setLoading(false));
   }, []);
 
   function loginSuccess({ token, user }) {
-    localStorage.setItem('token', token);
+    sessionStorage.setItem('token', token);
     setUser(user);
   }
 
   function logout() {
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     setUser(null);
   }
 

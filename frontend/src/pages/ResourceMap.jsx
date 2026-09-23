@@ -3,6 +3,16 @@ import AppShell from '../components/AppShell';
 import { searchFacilities } from '../services/api';
 import { IconMapPin } from '../components/Icons';
 
+// Opens the facility's location in Google Maps in a new tab - works with
+// zero setup/API key, unlike the embedded map below which only renders if
+// VITE_GOOGLE_MAPS_KEY is configured.
+function mapsUrlFor(facility) {
+  const query = facility.latitude && facility.longitude
+    ? `${facility.latitude},${facility.longitude}`
+    : `${facility.name} ${facility.address || ''}`;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
+
 const TYPE_OPTIONS = [
   { id: '', label: 'All types' },
   { id: 'clinic', label: 'Clinics' },
@@ -98,7 +108,15 @@ export default function ResourceMap() {
       <div className="list-section">
         {facilities.length === 0 && <p className="list-empty">No facilities match these filters yet.</p>}
         {facilities.map((f) => (
-          <div key={f.id} className="list-row" style={{ alignItems: 'flex-start' }}>
+          <a
+            key={f.id}
+            className="list-row"
+            style={{ alignItems: 'flex-start', cursor: 'pointer' }}
+            href={mapsUrlFor(f)}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={`Open ${f.name} in Google Maps`}
+          >
             <span className="list-row-icon"><IconMapPin size={18} /></span>
             <span className="list-row-body">
               <span className="list-row-title">{f.name}</span>
@@ -109,8 +127,11 @@ export default function ResourceMap() {
                 {f.phone ? <Badge>{f.phone}</Badge> : null}
               </div>
             </span>
-            <span className="list-row-trail" style={{ textTransform: 'capitalize' }}>{f.type}</span>
-          </div>
+            <span className="list-row-trail" style={{ textTransform: 'capitalize', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.3rem' }}>
+              {f.type}
+              <span style={{ fontSize: '0.78rem', color: 'var(--color-primary)', textTransform: 'none' }}>View on map →</span>
+            </span>
+          </a>
         ))}
       </div>
     </AppShell>
