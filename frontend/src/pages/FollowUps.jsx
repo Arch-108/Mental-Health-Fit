@@ -3,6 +3,7 @@ import AppShell from '../components/AppShell';
 import PageBanner from '../components/PageBanner';
 import { useAuth } from '../context/AuthContext';
 import { listMyFollowUps, respondToFollowUp, reviewFollowUp } from '../services/api';
+import FormattedText from '../components/FormattedText';
 
 export default function FollowUps() {
   const { user } = useAuth();
@@ -76,7 +77,7 @@ export default function FollowUps() {
               {f.ai_summary && (
                 <>
                   <div style={{ fontSize: '0.78rem', color: '#5B6472' }}>Structured summary</div>
-                  <p style={{ margin: '0.2rem 0' }}>{f.ai_summary}</p>
+                  <FormattedText text={f.ai_summary} style={{ margin: '0.2rem 0' }} />
                 </>
               )}
             </div>

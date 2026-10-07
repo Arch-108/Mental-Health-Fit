@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import {
   getAppointment, getConsultationBrief, submitAsyncUpdate, listAsyncUpdates, endConsultation, draftClinicalNote, API_ORIGIN,
 } from '../services/api';
+import FormattedText from '../components/FormattedText';
 
 export default function ConsultationRoom() {
   const { id } = useParams();
@@ -109,7 +110,7 @@ export default function ConsultationRoom() {
       {brief && (
         <div className="card" style={{ marginBottom: '1.2rem' }}>
           <h3>Consultation Brief</h3>
-          <p>{brief.ai_summary}</p>
+          <FormattedText text={brief.ai_summary} />
         </div>
       )}
 

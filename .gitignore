@@ -6,3 +6,4 @@ dist/
 backend/uploads/*
 !backend/uploads/.gitkeep
 *.tar.gz
+*.docx

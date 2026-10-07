@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { askStaffAssistant } from '../services/api';
 import { IconChat, IconClose } from './Icons';
+import FormattedText from './FormattedText';
 
 const STARTER_QUESTIONS_DOCTOR = [
   'How do I schedule a follow-up after a consultation?',
@@ -73,7 +74,7 @@ export default function StaffAssistantWidget() {
           <div ref={scrollRef} style={styles.messages}>
             {messages.map((m, i) => (
               <div key={i} style={{ ...styles.bubble, ...(m.role === 'user' ? styles.userBubble : styles.assistantBubble), ...(m.emergency ? styles.emergencyBubble : {}) }}>
-                {m.text}
+                {m.role === 'user' ? m.text : <FormattedText text={m.text} />}
               </div>
             ))}
             {loading && <div style={{ ...styles.bubble, ...styles.assistantBubble }}>…</div>}

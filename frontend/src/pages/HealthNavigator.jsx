@@ -2,6 +2,7 @@ import { useState } from 'react';
 import AppShell from '../components/AppShell';
 import PageBanner from '../components/PageBanner';
 import { askNavigator } from '../services/api';
+import FormattedText from '../components/FormattedText';
 
 const TASKS = [
   { id: 'understand-symptoms', label: 'Understand my symptoms' },
@@ -67,7 +68,9 @@ export default function HealthNavigator() {
             {conversation.map((m, i) => (
               <div key={i} style={{ marginBottom: '0.8rem' }}>
                 <div style={{ fontSize: '0.78rem', color: '#5B6472', marginBottom: '0.15rem' }}>{m.role === 'user' ? 'You' : 'Navigator'}</div>
-                <div style={m.emergency ? { color: '#B3432B', fontWeight: 600 } : {}}>{m.text}</div>
+                <div style={m.emergency ? { color: '#B3432B', fontWeight: 600 } : {}}>
+                  {m.role === 'user' ? m.text : <FormattedText text={m.text} />}
+                </div>
               </div>
             ))}
             {loading && <p>Thinking…</p>}

@@ -3,6 +3,7 @@ import AppShell from '../components/AppShell';
 import PageBanner from '../components/PageBanner';
 import { searchFacilities, createVaccinationRoute, listMyVaccinationRoutes, getVaccinationRoute, suggestScheduleOrder } from '../services/api';
 import { IconArrowUp, IconArrowDown, IconClose } from '../components/Icons';
+import FormattedText from '../components/FormattedText';
 
 export default function VaccinationRoutes() {
   const [facilities, setFacilities] = useState([]);
@@ -117,7 +118,7 @@ export default function VaccinationRoutes() {
             </div>
             {suggestion && (
               <div className="card" style={{ background: 'var(--color-bg)', fontSize: '0.85rem', margin: '0.6rem 0' }}>
-                {suggestion}
+                <FormattedText text={suggestion} />
               </div>
             )}
             {selectedStops.length === 0 && <p>Add stops from the list on the right.</p>}

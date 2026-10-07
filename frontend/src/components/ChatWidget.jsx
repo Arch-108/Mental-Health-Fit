@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { askNavigator } from '../services/api';
 import { IconChat, IconClose } from './Icons';
+import FormattedText from './FormattedText';
 
 const STARTER_QUESTIONS = [
   "What's bothering you today?",
@@ -67,7 +68,7 @@ export default function ChatWidget() {
           <div ref={scrollRef} style={styles.messages}>
             {messages.map((m, i) => (
               <div key={i} style={{ ...styles.bubble, ...(m.role === 'user' ? styles.userBubble : styles.assistantBubble), ...(m.emergency ? styles.emergencyBubble : {}) }}>
-                {m.text}
+                {m.role === 'user' ? m.text : <FormattedText text={m.text} />}
               </div>
             ))}
             {loading && <div style={{ ...styles.bubble, ...styles.assistantBubble }}>…</div>}

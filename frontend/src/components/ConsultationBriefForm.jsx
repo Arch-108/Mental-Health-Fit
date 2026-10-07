@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { generateConsultationBrief } from '../services/api';
+import FormattedText from './FormattedText';
 
 // Structured intake (Step 8 of the research doc) - deliberately NOT a free
 // text box asking "describe your symptoms", because that's what produces
@@ -38,7 +39,7 @@ export default function ConsultationBriefForm({ appointmentId, onGenerated }) {
         {result.emergency && (
           <div className="error-banner">{result.text}</div>
         )}
-        {!result.emergency && <p>{result.text}</p>}
+        {!result.emergency && <FormattedText text={result.text} />}
         <p style={{ fontSize: '0.82rem' }}>
           This is patient-reported and organized to help your consultation start faster — it is not a diagnosis,
           and you can still explain anything further to your doctor directly.
