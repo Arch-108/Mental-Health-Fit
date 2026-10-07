@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import AppShell from '../components/AppShell';
 import PageBanner from '../components/PageBanner';
 import { listDoctors, getOpenSlots, bookAppointment } from '../services/api';
+import BookingCalendar from '../components/BookingCalendar';
 
 export default function FindDoctors() {
   const [doctors, setDoctors] = useState([]);
@@ -82,21 +83,7 @@ export default function FindDoctors() {
               <label htmlFor="reason">Reason for visit (optional)</label>
               <input id="reason" value={reason} onChange={(e) => setReason(e.target.value)} style={{ marginBottom: '1rem' }} />
               {message && <div className="error-banner">{message}</div>}
-              <p style={{ fontWeight: 500, color: '#16233A' }}>Available slots (next 14 days):</p>
-              {slots.length === 0 && <p>No open slots — this doctor hasn't published availability yet.</p>}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                {slots.slice(0, 20).map((s) => (
-                  <button
-                    key={s}
-                    className="btn"
-                    disabled={booking}
-                    style={{ background: '#FBEFD7', color: '#12253F', fontSize: '0.82rem' }}
-                    onClick={() => book(s)}
-                  >
-                    {new Date(s).toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}
-                  </button>
-                ))}
-              </div>
+              <BookingCalendar slots={slots} onBook={book} booking={booking} />
             </div>
           )}
         </div>
